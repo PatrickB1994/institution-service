@@ -41,9 +41,9 @@ public class SecurityConfig
 		return http.cors(AbstractHttpConfigurer::disable)
 				   .csrf(AbstractHttpConfigurer::disable)
 				   .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-				   //        Set permissions on endpoints
+				   // Set permissions on endpoints
 				   .authorizeHttpRequests(auth -> auth
-						   //            public endpoints
+						   // public endpoints
 						   .requestMatchers(HttpMethod.GET, "/swagger-ui/**")
 						   .permitAll()
 						   .requestMatchers(HttpMethod.GET, "v3/api-docs/**")
@@ -52,17 +52,20 @@ public class SecurityConfig
 						   .permitAll()
 						   .requestMatchers(HttpMethod.POST, "/auth/refreshToken")
 						   .permitAll()
-						   //            private endpoints
+						   // private endpoints
+						   .requestMatchers(HttpMethod.DELETE, "/institution")
+						   .hasRole("ADMIN")
+						   .requestMatchers("/**")
+						   .hasAnyRole("USER", "ADMIN")
 						   .anyRequest()
 						   .authenticated())
 				   .authenticationManager(authenticationManager)
 				   // Add customAuthenticationEntryPoint
 				   .httpBasic(basic -> basic.authenticationEntryPoint(authEntryPoint))
 				   .exceptionHandling(Customizer.withDefaults())
-				   //        Add JWT token filter
+				   // Add JWT token filter
 				   .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
 				   .build();
-
 	}
 
 	@Bean

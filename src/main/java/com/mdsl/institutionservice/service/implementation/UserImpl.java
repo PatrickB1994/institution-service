@@ -22,7 +22,7 @@ public class UserImpl implements UserService
 	@PostConstruct
 	private void init()
 	{
-		UserEntity user = UserEntity.builder().name("admin").password(new BCryptPasswordEncoder().encode("admin")).roles("Admin").build();
+		UserEntity user = UserEntity.builder().name("admin").password(new BCryptPasswordEncoder().encode("admin")).roles("ADMIN").build();
 		userRepository.save(user);
 	}
 

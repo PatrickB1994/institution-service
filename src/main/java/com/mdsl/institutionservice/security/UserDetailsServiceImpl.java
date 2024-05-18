@@ -24,6 +24,10 @@ public class UserDetailsServiceImpl implements UserDetailsService
 
 		UserEntity user = repository.findByName(name).orElseThrow(() -> new AccessDeniedException("Access denied"));
 
-		return org.springframework.security.core.userdetails.User.builder().username(user.getName()).password(user.getPassword()).build();
+		return org.springframework.security.core.userdetails.User.builder()
+																 .username(user.getName())
+																 .password(user.getPassword())
+																 .roles(user.getRoles())
+																 .build();
 	}
 }
