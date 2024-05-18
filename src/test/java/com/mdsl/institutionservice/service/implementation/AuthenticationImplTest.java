@@ -10,6 +10,7 @@ import com.mdsl.institutionservice.enums.ResponseStatus;
 import com.mdsl.institutionservice.exception.AccessDeniedException;
 import com.mdsl.institutionservice.exception.TokenExpiredException;
 import com.mdsl.institutionservice.repository.RefreshTokenRepository;
+import com.mdsl.institutionservice.service.CustomMetricService;
 import com.mdsl.institutionservice.service.UserService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -35,6 +36,9 @@ public class AuthenticationImplTest
 
 	@Mock
 	private UserService userService;
+
+	@Mock
+	private CustomMetricService customMetricService;
 
 	@InjectMocks
 	private AuthenticationImpl authenticationService;
