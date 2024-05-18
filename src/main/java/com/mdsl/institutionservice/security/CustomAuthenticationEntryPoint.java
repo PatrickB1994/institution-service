@@ -23,7 +23,7 @@ public class CustomAuthenticationEntryPoint implements AuthenticationEntryPoint
 		response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
 		response.getOutputStream()
 				.println(
-						"{ \"entity\": [], \"message\": \"Authentication is required\", \"developerMessage\": \"Authentication is required\", \"statusCode\": 4002, \"timestamp\": \"" +
+						"{ \"entity\": [], \"message\": \"Unauthenticated request\", \"developerMessage\": \"Unauthenticated request\", \"statusCode\": 4002, \"timestamp\": \"" +
 								now + "\" }");
 	}
 }
