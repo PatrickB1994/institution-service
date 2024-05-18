@@ -5,11 +5,11 @@ import com.mdsl.institutionservice.enums.ResponseStatus;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.json.JsonParseException;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.dao.InvalidDataAccessApiUsageException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
 import static com.mdsl.institutionservice.enums.ExceptionCode.*;
@@ -19,9 +19,18 @@ import static com.mdsl.institutionservice.enums.ExceptionCode.*;
 public class GlobalExceptionHandler
 {
 
+	@ExceptionHandler(InvalidDataAccessApiUsageException.class)
+	public ResponseEntity<BaseResponse<?>> handleInvalidDataAccessApiUsageException(InvalidDataAccessApiUsageException ex)
+	{
+		BaseResponse<?> response = new BaseResponse<>();
+		response.setDeveloperMessage(ex.getMostSpecificCause().getMessage())
+				.setMessage(INVALID_REQUEST_EXCEPTION.getMessage())
+				.setStatusCode(INVALID_REQUEST_EXCEPTION.getCode());
+		return ResponseEntity.badRequest().body(response);
+	}
+
 	@ExceptionHandler(DataIntegrityViolationException.class)
-	@ResponseBody
-	public ResponseEntity<BaseResponse<?>> processConstraintError(InvalidRequestException ex)
+	public ResponseEntity<BaseResponse<?>> handleConstraintError(InvalidRequestException ex)
 	{
 		BaseResponse<?> response = new BaseResponse<>();
 		response.setDeveloperMessage(ex.getMessage())
