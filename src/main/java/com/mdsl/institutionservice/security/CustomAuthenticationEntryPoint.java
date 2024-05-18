@@ -20,10 +20,10 @@ public class CustomAuthenticationEntryPoint implements AuthenticationEntryPoint
 	{
 		final LocalDateTime now = LocalDateTime.now();
 		response.setContentType("application/json");
-		response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+		response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
 		response.getOutputStream()
 				.println(
-						"{ \"entity\": [], \"message\": \"Authentication is required\", \"developerMessage\": \"Failure\", \"statusCode\": 4002, \"timestamp\": \"" +
+						"{ \"entity\": [], \"message\": \"Authentication is required\", \"developerMessage\": \"Authentication is required\", \"statusCode\": 4002, \"timestamp\": \"" +
 								now + "\" }");
 	}
 }

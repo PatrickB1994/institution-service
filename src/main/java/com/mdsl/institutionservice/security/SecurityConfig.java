@@ -26,6 +26,7 @@ public class SecurityConfig
 
 	private final UserDetailsServiceImpl userDetailsService;
 	private final JwtAuthFilter jwtAuthFilter;
+	private final CustomAccessDeniedHandler accessDeniedHandler;
 	@Qualifier("customAuthenticationEntryPoint")
 	private final AuthenticationEntryPoint authEntryPoint;
 
@@ -62,7 +63,9 @@ public class SecurityConfig
 						   .anyRequest()
 						   .authenticated())
 				   .authenticationManager(authenticationManager)
-				   // Add customAuthenticationEntryPoint
+				   // Handle Unauthorized requests
+				   .exceptionHandling(e -> e.accessDeniedHandler(accessDeniedHandler))
+				   // Handle Unauthenticated requests
 				   .httpBasic(basic -> basic.authenticationEntryPoint(authEntryPoint))
 				   .exceptionHandling(Customizer.withDefaults())
 				   // Add JWT token filter
