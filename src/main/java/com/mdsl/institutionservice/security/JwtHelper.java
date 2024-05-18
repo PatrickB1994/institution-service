@@ -5,7 +5,6 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
-import io.jsonwebtoken.security.MacAlgorithm;
 import io.jsonwebtoken.security.SignatureException;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -17,11 +16,11 @@ import java.util.Date;
 public class JwtHelper
 {
 
-	static MacAlgorithm algorithm = Jwts.SIG.HS256;
-	static SecretKey SECRET_KEY = algorithm.key().build();
+	private static final String SECRET = "ThisIsASecretKeyForTestingOnlyThisIsASecretKeyForTestingOnly";
+	static SecretKey SECRET_KEY = Keys.hmacShaKeyFor(SECRET.getBytes());
 	static byte[] keyBytes = SECRET_KEY.getEncoded();
-	private static final int MINUTES = 30;
-	private static final int REFRESH_TOKEN_EXPIRATION = 120;
+	private static final int TOKEN_TTL = 30;
+	private static final int REFRESH_TOKEN_TTL = 120;
 
 	private static SecretKey getSignInKey()
 	{
@@ -34,14 +33,14 @@ public class JwtHelper
 		return Jwts.builder()
 				   .subject(name)
 				   .issuedAt(Date.from(now))
-				   .expiration(Date.from(now.plus(MINUTES, ChronoUnit.MINUTES)))
-				   .signWith(SECRET_KEY)
+				   .expiration(Date.from(now.plus(TOKEN_TTL, ChronoUnit.MINUTES)))
+				   .signWith(getSignInKey())
 				   .compact();
 	}
 
 	public static String generateRefreshToken()
 	{
-		return Jwts.builder().expiration(Date.from(Instant.now().plus(REFRESH_TOKEN_EXPIRATION, ChronoUnit.MINUTES))).signWith(SECRET_KEY).compact();
+		return Jwts.builder().expiration(Date.from(Instant.now().plus(REFRESH_TOKEN_TTL, ChronoUnit.MINUTES))).signWith(getSignInKey()).compact();
 	}
 
 	public static String extractUsername(String token)
