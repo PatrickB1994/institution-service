@@ -1,11 +1,13 @@
 package com.mdsl.institutionservice.dto;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 import lombok.experimental.Accessors;
 
 import java.time.LocalDateTime;
 
-@Data
+@Getter
+@Setter
 @Accessors(chain = true)
 public class BaseResponse<T>
 {
