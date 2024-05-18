@@ -6,8 +6,8 @@ A Spring Boot service for managing institutions providing secure CRUD operations
 
 This project is built using Java and the Spring Boot framework. It utilizes an H2 embedded database in runtime scope and Hibernate ORM for entity
 mapping and CRUD operations. Log4j2 is used for logging to the console and a rolling file appender. Spring Security Core is implemented for JWT-based
-authentication and authorization. Aspect-Oriented Programming (AOP) is employed for logging requests and responses. Springdoc OpenAPI is used for
-generating API documentation.
+authentication and authorization with an added rate Limiter on the JWT filter for more security. Unit Testing utilizing JUnit and mockito,
+Aspect-Oriented Programming (AOP) is employed for logging requests and responses. Springdoc OpenAPI is used for generating API documentation.
 
 <img src="https://img.shields.io/badge/Language-Java-orange.svg">
 

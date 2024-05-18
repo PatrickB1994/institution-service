@@ -6,6 +6,7 @@ import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -14,6 +15,8 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 @Component
 public class JwtAuthFilter extends OncePerRequestFilter
@@ -21,6 +24,9 @@ public class JwtAuthFilter extends OncePerRequestFilter
 
 	private final UserDetailsServiceImpl userDetailsService;
 	private final ObjectMapper objectMapper;
+	private final Map<String, Long> requestCounts = new ConcurrentHashMap<>();
+	private static final long RATE_LIMIT_PERIOD = 60_000; // 1 minute
+	private static final int MAX_REQUESTS_PER_PERIOD = 50;
 
 	public JwtAuthFilter(UserDetailsServiceImpl userDetailsService, ObjectMapper objectMapper)
 	{
@@ -34,6 +40,31 @@ public class JwtAuthFilter extends OncePerRequestFilter
 	{
 		try
 		{
+
+			// Rate limiting by user IP can be changed to any other identifier
+			String userKey = request.getRemoteAddr();
+			long currentTime = System.currentTimeMillis();
+			long lastRequestTime = requestCounts.getOrDefault(userKey, 0L);
+
+			if(currentTime - lastRequestTime < RATE_LIMIT_PERIOD)
+			{
+				Long requestCount = requestCounts.getOrDefault(userKey + "_count", 0L);
+				if(requestCount >= MAX_REQUESTS_PER_PERIOD)
+				{
+					// Too many requests, return HTTP 429 Too Many Requests
+					response.setStatus(HttpStatus.TOO_MANY_REQUESTS.value());
+					return;
+				}
+				requestCounts.put(userKey + "_count", requestCount + 1L);
+			}
+			else
+			{
+				// Reset request count for a new period
+				requestCounts.put(userKey + "_count", 1L);
+			}
+			// Update last request time
+			requestCounts.put(userKey, currentTime);
+
 			String authHeader = request.getHeader("Authorization");
 			String token = null;
 			String username = null;
