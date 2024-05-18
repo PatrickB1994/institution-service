@@ -8,9 +8,9 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping(value = "/institution")
@@ -29,10 +29,10 @@ public class InstitutionController
 
 	@Operation(summary = "Get institutions", security = @SecurityRequirement(name = "bearerAuth"))
 	@GetMapping()
-	public BaseResponse<List<InstitutionEntity>> getInstitution(HttpServletRequest request, @RequestParam(required = false) Long id,
-			@RequestParam(required = false) Long status)
+	public BaseResponse<Page<InstitutionEntity>> getInstitution(HttpServletRequest request, @RequestParam(required = false) Long id,
+			@RequestParam(required = false) Long status, Pageable pageable)
 	{
-		return institutionService.getInstitution(id, status);
+		return institutionService.getInstitution(id, status, pageable);
 	}
 
 	@Operation(summary = "Delete Institution", security = @SecurityRequirement(name = "bearerAuth"))

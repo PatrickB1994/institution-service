@@ -9,6 +9,8 @@ import com.mdsl.institutionservice.repository.InstitutionRepository;
 import com.mdsl.institutionservice.service.InstitutionService;
 import com.mdsl.institutionservice.shared.Validation;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -88,11 +90,11 @@ public class InstitutionImpl implements InstitutionService
 	 * @return BaseResponse<List < InstitutionEntity>> containing the list of institution entities
 	 **/
 	@Override
-	public BaseResponse<List<InstitutionEntity>> getInstitution(Long id, Long status)
+	public BaseResponse<Page<InstitutionEntity>> getInstitution(Long id, Long status, Pageable pageable)
 	{
-		BaseResponse<List<InstitutionEntity>> response = new BaseResponse<>();
+		BaseResponse<Page<InstitutionEntity>> response = new BaseResponse<>();
 
-		List<InstitutionEntity> institutions = institutionRepository.findByIdOrStatusOrAll(id, status);
+		Page<InstitutionEntity> institutions = institutionRepository.findByIdOrStatusOrAll(id, status, pageable);
 
 		response.setEntity(institutions).setDeveloperMessage(ResponseStatus.SUCCESS.getStatus()).setMessage("Institutions retrieved successfully");
 		return response;

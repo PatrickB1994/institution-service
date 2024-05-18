@@ -5,6 +5,7 @@ import com.mdsl.institutionservice.dto.LoginRequest;
 import com.mdsl.institutionservice.dto.LoginResponse;
 import com.mdsl.institutionservice.dto.RefreshTokenRequest;
 import com.mdsl.institutionservice.entity.RefreshTokenEntity;
+import com.mdsl.institutionservice.entity.UserEntity;
 import com.mdsl.institutionservice.enums.ResponseStatus;
 import com.mdsl.institutionservice.exception.AccessDeniedException;
 import com.mdsl.institutionservice.exception.TokenExpiredException;
@@ -18,6 +19,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -90,8 +92,13 @@ public class AuthenticationImpl implements AuthenticationService
 	 **/
 	private RefreshTokenEntity createRefreshToken(String userName)
 	{
+		UserEntity user = userService.getUserByName(userName);
+		Optional<RefreshTokenEntity> oldRefreshToken = refreshTokenRepository.findByUser(user);
+
+		oldRefreshToken.ifPresent(refreshTokenRepository::delete);
+
 		RefreshTokenEntity refreshToken = RefreshTokenEntity.builder()
-															.user(userService.getUserByName(userName))
+															.user(user)
 															.token(JwtHelper.generateRefreshToken())
 															.expiryDate(Instant.now().plusSeconds(600))
 															.build();
