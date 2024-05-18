@@ -9,6 +9,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class UserImpl implements UserService
@@ -22,8 +25,10 @@ public class UserImpl implements UserService
 	@PostConstruct
 	private void init()
 	{
-		UserEntity user = UserEntity.builder().name("admin").password(new BCryptPasswordEncoder().encode("admin")).roles("ADMIN").build();
-		userRepository.save(user);
+		List<UserEntity> users = new ArrayList<>();
+		users.add(UserEntity.builder().name("admin").password(new BCryptPasswordEncoder().encode("admin")).roles("ADMIN").build());
+		users.add(UserEntity.builder().name("user").password(new BCryptPasswordEncoder().encode("user")).roles("USER").build());
+		userRepository.saveAll(users);
 	}
 
 	/**

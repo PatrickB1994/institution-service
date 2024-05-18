@@ -19,13 +19,13 @@ public class AuthenticationController
 
 	private final AuthenticationService authenticationService;
 
-	@PostMapping("/login")
+	@PostMapping("/v1/login")
 	public BaseResponse<LoginResponse> login(@RequestBody LoginRequest loginRequest)
 	{
 		return authenticationService.login(loginRequest);
 	}
 
-	@PostMapping("/refreshToken")
+	@PostMapping("/v1/refreshToken")
 	public BaseResponse<LoginResponse> refreshToken(@RequestBody RefreshTokenRequest refreshTokenRequest)
 	{
 		return authenticationService.refreshToken(refreshTokenRequest);

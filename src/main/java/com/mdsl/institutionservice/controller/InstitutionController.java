@@ -21,14 +21,14 @@ public class InstitutionController
 	private final InstitutionService institutionService;
 
 	@Operation(summary = "Add Or Update Institution", security = @SecurityRequirement(name = "bearerAuth"))
-	@PostMapping()
+	@PostMapping("v1")
 	public BaseResponse<InstitutionEntity> addOrUpdateInstitution(HttpServletRequest request, @RequestBody InstitutionDto institutionDto)
 	{
 		return institutionService.addOrUpdateInstitution(institutionDto);
 	}
 
 	@Operation(summary = "Get institutions", security = @SecurityRequirement(name = "bearerAuth"))
-	@GetMapping()
+	@GetMapping("v1")
 	public BaseResponse<Page<InstitutionEntity>> getInstitution(HttpServletRequest request, @RequestParam(required = false) Long id,
 			@RequestParam(required = false) Long status, Pageable pageable)
 	{
@@ -36,7 +36,7 @@ public class InstitutionController
 	}
 
 	@Operation(summary = "Delete Institution", security = @SecurityRequirement(name = "bearerAuth"))
-	@DeleteMapping()
+	@DeleteMapping("v1")
 	public BaseResponse<?> deleteInstitution(HttpServletRequest request, @RequestParam(required = true) Long id)
 	{
 		return institutionService.deleteInstitution(id);
