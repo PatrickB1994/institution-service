@@ -19,7 +19,7 @@ public class JwtHelper
 	private static final String SECRET = "ThisIsASecretKeyForTestingOnlyThisIsASecretKeyForTestingOnly";
 	static SecretKey SECRET_KEY = Keys.hmacShaKeyFor(SECRET.getBytes());
 	static byte[] keyBytes = SECRET_KEY.getEncoded();
-	private static final int TOKEN_TTL = 30;
+	private static final int TOKEN_TTL = 3;
 	private static final int REFRESH_TOKEN_TTL = 120;
 
 	private static SecretKey getSignInKey()
