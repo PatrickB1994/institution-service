@@ -21,9 +21,9 @@ This project is developed using Java in conjunction with the Spring Boot framewo
 
 ## Usage
 
-To start the application, begin by cloning the repository using the command git clone https://github.com/PatrickB1994/institution-service.git. Next,
-navigate to the project directory by running cd institution-service. Then, build the project and initiate the application with the command mvn
-spring-boot:run. You can access the API Documentation via http://localhost:8080/swagger-ui/index.html#/. To utilize the provided service,
+To start the application, begin by cloning the repository using the command "git clone https://github.com/PatrickB1994/institution-service.git". Next,
+navigate to the project directory by running "cd institution-service". Then, build the project and initiate the application with the command "mvn
+spring-boot:run". You can access the API Documentation via http://localhost:8080/swagger-ui/index.html#/. To utilize the provided service,
 authentication is required, requiring the acquisition of a JWT token. Utilize the provided authentication endpoints to log in with the default
 credentials: username "admin" and password "admin". Upon successful authentication, you will receive a token which should be included in the
 Authorization header for subsequent requests. With a valid JWT token, you are now able to perform CRUD operations. Additionally, the application
