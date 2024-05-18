@@ -16,7 +16,7 @@ public class InstitutionEntity
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id")
 	private Long id;
-	@Column(name = "institution_code", nullable = false, length = 5)
+	@Column(name = "institution_code", nullable = false, unique = true, length = 5)
 	private Long institutionCode;
 	@Column(name = "institution_name", nullable = false, length = 50)
 	private String institutionName;

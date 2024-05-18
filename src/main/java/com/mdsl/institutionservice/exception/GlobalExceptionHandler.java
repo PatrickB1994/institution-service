@@ -2,13 +2,14 @@ package com.mdsl.institutionservice.exception;
 
 import com.mdsl.institutionservice.dto.BaseResponse;
 import com.mdsl.institutionservice.enums.ResponseStatus;
-import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.json.JsonParseException;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
 import static com.mdsl.institutionservice.enums.ExceptionCode.*;
@@ -17,6 +18,17 @@ import static com.mdsl.institutionservice.enums.ExceptionCode.*;
 @ControllerAdvice
 public class GlobalExceptionHandler
 {
+
+	@ExceptionHandler(DataIntegrityViolationException.class)
+	@ResponseBody
+	public ResponseEntity<BaseResponse<?>> processConstraintError(InvalidRequestException ex)
+	{
+		BaseResponse<?> response = new BaseResponse<>();
+		response.setDeveloperMessage(ex.getMessage())
+				.setMessage(ResponseStatus.FAILED.getStatus())
+				.setStatusCode(INVALID_REQUEST_EXCEPTION.getCode());
+		return ResponseEntity.badRequest().body(response);
+	}
 
 	@ExceptionHandler(value = { HttpRequestMethodNotSupportedException.class })
 	public ResponseEntity<BaseResponse<?>> handleMethodNotSupported(HttpRequestMethodNotSupportedException exception)

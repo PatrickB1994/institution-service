@@ -20,7 +20,7 @@ public class JwtHelper
 	static MacAlgorithm algorithm = Jwts.SIG.HS256;
 	static SecretKey SECRET_KEY = algorithm.key().build();
 	static byte[] keyBytes = SECRET_KEY.getEncoded();
-	private static final int MINUTES = 3;
+	private static final int MINUTES = 30;
 	private static final int REFRESH_TOKEN_EXPIRATION = 120;
 
 	private static SecretKey getSignInKey()

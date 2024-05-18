@@ -5,6 +5,7 @@ import com.mdsl.institutionservice.dto.InstitutionDto;
 import com.mdsl.institutionservice.entity.InstitutionEntity;
 import com.mdsl.institutionservice.enums.ResponseStatus;
 import com.mdsl.institutionservice.exception.EntityNotFoundException;
+import com.mdsl.institutionservice.exception.InvalidRequestException;
 import com.mdsl.institutionservice.repository.InstitutionRepository;
 import com.mdsl.institutionservice.service.InstitutionService;
 import com.mdsl.institutionservice.shared.Validation;
@@ -46,6 +47,13 @@ public class InstitutionImpl implements InstitutionService
 		{
 			institutionEntity = institutionRepository.findById(institutionId)
 													 .orElseThrow(() -> new EntityNotFoundException("Institution ID: " + institutionId));
+		}
+		else
+		{
+			if(institutionRepository.findByInstitutionCode(institutionDto.getInstitutionCode()).isPresent())
+			{
+				throw new InvalidRequestException("Institution code already exist");
+			}
 		}
 
 		// Update fields with non-null values from DTO
