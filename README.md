@@ -4,7 +4,7 @@ A Spring Boot service for managing institutions providing secure CRUD operations
 
 ## Technologies
 
-This project is developed using Java in conjunction with the Spring Boot framework. Key components and technologies employed include:
+This project is developed using Java with Spring Boot framework. Key components and technologies employed include:
 
 * Database: Utilizes an H2 embedded database within the runtime environment.
 * Security: Implements Spring Security Core for robust JWT-based authentication and authorization. Additionally, a rate limiter is integrated into the
