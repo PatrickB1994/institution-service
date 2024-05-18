@@ -12,6 +12,7 @@ import com.mdsl.institutionservice.exception.TokenExpiredException;
 import com.mdsl.institutionservice.repository.RefreshTokenRepository;
 import com.mdsl.institutionservice.security.JwtHelper;
 import com.mdsl.institutionservice.service.AuthenticationService;
+import com.mdsl.institutionservice.service.CustomMetricService;
 import com.mdsl.institutionservice.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -28,6 +29,7 @@ public class AuthenticationImpl implements AuthenticationService
 
 	private final AuthenticationManager authenticationManager;
 	private final RefreshTokenRepository refreshTokenRepository;
+	private final CustomMetricService customMetricService;
 	private final UserService userService;
 
 	/**
@@ -44,6 +46,8 @@ public class AuthenticationImpl implements AuthenticationService
 		authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getUserName(), loginRequest.getPassword()));
 		String token = JwtHelper.generateToken(loginRequest.getUserName());
 		LoginResponse loginResponse = new LoginResponse().setToken(token).setRefreshToken(createRefreshToken(loginRequest.getUserName()).getToken());
+
+		customMetricService.loginSuccess();
 
 		response.setEntity(loginResponse).setMessage("Login successful").setMessage(ResponseStatus.SUCCESS.getStatus());
 		return response;
@@ -65,6 +69,8 @@ public class AuthenticationImpl implements AuthenticationService
 
 		verifyRefreshTokenExpiration(refreshToken);
 		String token = JwtHelper.generateToken(refreshToken.getUser().getName());
+
+		customMetricService.refreshSuccess();
 
 		return response.setMessage(ResponseStatus.SUCCESS.getStatus())
 					   .setEntity(new LoginResponse().setToken(token).setRefreshToken(refreshTokenRequest.getRefreshToken()));

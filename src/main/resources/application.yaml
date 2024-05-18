@@ -9,3 +9,14 @@ spring:
     username: sa
     password: password
     driverClassName: org.h2.Driver
+
+management:
+  endpoint:
+    health:
+      show-details: always
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+    prometheus:
+      enabled: true
