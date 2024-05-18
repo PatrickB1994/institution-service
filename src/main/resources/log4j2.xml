@@ -8,7 +8,7 @@
 
         <!-- Rolling file appender -->
         <RollingFile name="RollingFile" fileName="logs/app.log"
-                     filePattern="logs/app-%d{MM-dd-yyyy}-%i.log">
+                     filePattern="logs/app-%d{MM-dd-yyyy}-%i.log.zip">
             <PatternLayout pattern="%d{HH:mm:ss.SSS} %-5level - %msg%n"/>
             <Policies>
                 <!-- Rotate log files daily -->
