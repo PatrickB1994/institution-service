@@ -3,13 +3,15 @@ package com.mdsl.institutionservice.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.List;
+
 @Getter
 @Setter
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "`user`")
+@Table(name = "users")
 public class UserEntity
 {
 	@Id
@@ -20,6 +22,7 @@ public class UserEntity
 	private String name;
 	@Column(name = "password", nullable = false)
 	private String password;
-	@Column(name = "roles", nullable = false)
-	private String roles;
+	@ManyToMany(fetch = FetchType.EAGER)
+	@JoinTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
+	private List<RoleEntity> roles;
 }

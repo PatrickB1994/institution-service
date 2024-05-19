@@ -2,6 +2,9 @@ package com.mdsl.institutionservice.entity;
 
 import org.junit.jupiter.api.Test;
 
+import java.util.Collections;
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
@@ -15,7 +18,7 @@ public class UserEntityTest
 		Long id = 1L;
 		String name = "testUser";
 		String password = "testPassword";
-		String roles = "ROLE_USER";
+		List<RoleEntity> roles = Collections.singletonList(RoleEntity.builder().name("USER").build());
 
 		UserEntity user = new UserEntity();
 
@@ -39,7 +42,7 @@ public class UserEntityTest
 		Long id = 1L;
 		String name = "testUser";
 		String password = "testPassword";
-		String roles = "ROLE_USER";
+		List<RoleEntity> roles = Collections.singletonList(RoleEntity.builder().name("USER").build());
 
 		// Act
 		UserEntity user = UserEntity.builder().id(id).name(name).password(password).roles(roles).build();
@@ -59,7 +62,7 @@ public class UserEntityTest
 		Long id = 1L;
 		String name = "testUser";
 		String password = "testPassword";
-		String roles = "ROLE_USER";
+		List<RoleEntity> roles = Collections.singletonList(RoleEntity.builder().name("USER").build());
 
 		// Act
 		UserEntity user = new UserEntity(id, name, password, roles);

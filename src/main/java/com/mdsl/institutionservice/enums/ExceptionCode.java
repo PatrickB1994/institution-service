@@ -5,8 +5,10 @@ import lombok.Getter;
 @Getter
 public enum ExceptionCode
 {
-	AccessDeniedException(1000, "Access denied"),
+	ACCESS_DENIED_EXCEPTION(1000, "Access denied"),
 	METHOD_NOT_SUPPORTED_EXCEPTION(1001, "Method not supported"),
+	AUTHENTICATION_FAILED_EXCEPTION(1002, "Authentication failed"),
+	AUTHORIZATION_FAILED_EXCEPTION(1003, "Authorization failed"),
 	GENERAL_EXCEPTION(4000, "Error occurred"),
 	ENTITY_NOT_FOUND(4001, "Entity not found"),
 	VALIDATION_EXCEPTION(4002, "Error validating"),

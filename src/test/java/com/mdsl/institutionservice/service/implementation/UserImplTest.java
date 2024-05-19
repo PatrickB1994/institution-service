@@ -1,5 +1,6 @@
 package com.mdsl.institutionservice.service.implementation;
 
+import com.mdsl.institutionservice.entity.RoleEntity;
 import com.mdsl.institutionservice.entity.UserEntity;
 import com.mdsl.institutionservice.exception.EntityNotFoundException;
 import com.mdsl.institutionservice.repository.UserRepository;
@@ -10,6 +11,7 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
+import java.util.Collections;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -37,7 +39,11 @@ public class UserImplTest
 		// Arrange
 		String userName = "admin";
 		String encodedPassword = new BCryptPasswordEncoder().encode("admin");
-		UserEntity userEntity = UserEntity.builder().name(userName).password(encodedPassword).roles("ADMIN").build();
+		UserEntity userEntity = UserEntity.builder()
+										  .name(userName)
+										  .password(encodedPassword)
+										  .roles(Collections.singletonList(RoleEntity.builder().name("ADMIN").build()))
+										  .build();
 		when(userRepository.findByName(userName)).thenReturn(Optional.of(userEntity));
 
 		// Act
@@ -46,7 +52,7 @@ public class UserImplTest
 		// Assert
 		assertEquals(userName, retrievedUser.getName());
 		assertEquals(encodedPassword, retrievedUser.getPassword());
-		assertEquals("ADMIN", retrievedUser.getRoles());
+		assertEquals("ADMIN", retrievedUser.getRoles().getFirst().getName());
 		verify(userRepository, times(1)).findByName(userName);
 	}
 

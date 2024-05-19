@@ -1,8 +1,10 @@
 package com.mdsl.institutionservice.service.implementation;
 
+import com.mdsl.institutionservice.entity.RoleEntity;
 import com.mdsl.institutionservice.entity.UserEntity;
 import com.mdsl.institutionservice.exception.EntityNotFoundException;
 import com.mdsl.institutionservice.repository.UserRepository;
+import com.mdsl.institutionservice.service.RoleService;
 import com.mdsl.institutionservice.service.UserService;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
@@ -18,6 +20,7 @@ public class UserImpl implements UserService
 {
 
 	private final UserRepository userRepository;
+	private final RoleService roleService;
 
 	/**
 	 * This method is populating the users for testing purposes
@@ -25,9 +28,12 @@ public class UserImpl implements UserService
 	@PostConstruct
 	private void init()
 	{
+
+		List<RoleEntity> adminRoles = List.of(roleService.getByName("ADMIN"));
+		List<RoleEntity> userRoles = List.of(roleService.getByName("USER"));
 		List<UserEntity> users = new ArrayList<>();
-		users.add(UserEntity.builder().name("admin").password(new BCryptPasswordEncoder().encode("admin")).roles("ADMIN").build());
-		users.add(UserEntity.builder().name("user").password(new BCryptPasswordEncoder().encode("user")).roles("USER").build());
+		users.add(UserEntity.builder().name("admin").password(new BCryptPasswordEncoder().encode("admin")).roles(adminRoles).build());
+		users.add(UserEntity.builder().name("user").password(new BCryptPasswordEncoder().encode("user")).roles(userRoles).build());
 		userRepository.saveAll(users);
 	}
 

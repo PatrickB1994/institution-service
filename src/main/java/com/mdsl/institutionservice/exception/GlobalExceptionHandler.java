@@ -6,6 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.json.JsonParseException;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.InvalidDataAccessApiUsageException;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -46,17 +47,23 @@ public class GlobalExceptionHandler
 		response.setDeveloperMessage(exception.getMessage())
 				.setMessage(ResponseStatus.FAILED.getStatus())
 				.setStatusCode(METHOD_NOT_SUPPORTED_EXCEPTION.getCode());
-		return ResponseEntity.badRequest().body(response);
+		return ResponseEntity.status(HttpStatus.METHOD_NOT_ALLOWED).body(response);
 	}
 
-	@ExceptionHandler(value = { org.springframework.security.access.AccessDeniedException.class })
-	public ResponseEntity<BaseResponse<?>> handleAccessDeniedException(AccessDeniedException exception)
+	@ExceptionHandler(value = { AuthenticationFailedException.class })
+	public ResponseEntity<BaseResponse<?>> handleAuthenticationFailedException(AuthenticationFailedException exception)
 	{
 		BaseResponse<?> response = new BaseResponse<>();
-		response.setDeveloperMessage(exception.getMessage())
-				.setMessage(AccessDeniedException.getMessage())
-				.setStatusCode(AccessDeniedException.getCode());
-		return ResponseEntity.badRequest().body(response);
+		response.setDeveloperMessage(exception.getMessage()).setMessage(exception.getMessage());
+		return ResponseEntity.status(HttpStatus.FORBIDDEN).body(response);
+	}
+
+	@ExceptionHandler(value = { AuthorizationFailedException.class })
+	public ResponseEntity<BaseResponse<?>> handleAuthorizationFailedException(AuthorizationFailedException exception)
+	{
+		BaseResponse<?> response = new BaseResponse<>();
+		response.setDeveloperMessage(exception.getMessage()).setMessage(exception.getMessage());
+		return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
 	}
 
 	@ExceptionHandler(value = { MethodArgumentTypeMismatchException.class })
