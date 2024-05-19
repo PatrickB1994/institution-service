@@ -1,0 +1,14 @@
+version: '3.8'
+
+services:
+  institution-service:
+    image: institution-service
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./logs:/logs
+    environment:
+      - PROJECT_NAME=institution-service
