@@ -1,15 +1,23 @@
 package com.mdsl.institutionservice.shared;
 
 import com.mdsl.institutionservice.dto.InstitutionDto;
-import com.mdsl.institutionservice.exception.EntityNotFoundException;
-import com.mdsl.institutionservice.exception.ValidationException;
-import lombok.RequiredArgsConstructor;
+import com.mdsl.institutionservice.dto.UserDto;
+import com.mdsl.institutionservice.exception.*;
+import lombok.Getter;
+import lombok.Setter;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
+import java.util.regex.Pattern;
+
+@Getter
+@Setter
 @Component
-@RequiredArgsConstructor
 public class Validation
 {
+
+	@Value("${password.pattern}")
+	private String passwordPattern;
 
 	public void validateAddUpdateInstitution(InstitutionDto institutionDto)
 	{
@@ -50,6 +58,30 @@ public class Validation
 		{
 			throw new EntityNotFoundException();
 		}
+	}
+
+	public void validateAddOrUpdateUser(UserDto userDto)
+	{
+		boolean isUpdate = userDto.getId() != null && userDto.getId() != 0;
+
+		if(!isUpdate && userDto.getUserName() == null)
+		{
+			throw new InvalidUserNameException();
+		}
+		if(!isUpdate && (userDto.getPassword() == null || !isValidPassword(userDto.getPassword())))
+		{
+			throw new InvalidPasswordException(
+					"Password should have at least one digit, at least one lowercase letter, at least one uppercase letter, at least one special character and length between 8 and 20 characters");
+		}
+		if(!isUpdate && userDto.getRoles().isEmpty())
+		{
+			throw new InvalidRoleException();
+		}
+	}
+
+	public boolean isValidPassword(String password)
+	{
+		return Pattern.compile(passwordPattern).matcher(password).matches();
 	}
 
 }

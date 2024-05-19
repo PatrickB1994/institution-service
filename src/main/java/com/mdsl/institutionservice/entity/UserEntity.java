@@ -1,5 +1,6 @@
 package com.mdsl.institutionservice.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -20,9 +21,13 @@ public class UserEntity
 	private Long id;
 	@Column(name = "name", nullable = false)
 	private String name;
+	@JsonIgnore
 	@Column(name = "password", nullable = false)
 	private String password;
 	@ManyToMany(fetch = FetchType.EAGER)
 	@JoinTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
 	private List<RoleEntity> roles;
+	@JsonIgnore
+	@OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+	private RefreshTokenEntity refreshToken;
 }

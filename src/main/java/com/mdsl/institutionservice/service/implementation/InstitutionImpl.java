@@ -69,28 +69,6 @@ public class InstitutionImpl implements InstitutionService
 	}
 
 	/**
-	 * This method is used to update the non-null fields
-	 *
-	 * @param dto    the DTO containing institution information
-	 * @param entity the entity which will be updated
-	 **/
-	private void updateInstitutionFields(InstitutionDto dto, InstitutionEntity entity)
-	{
-		if(dto.getInstitutionCode() != null)
-		{
-			entity.setInstitutionCode(dto.getInstitutionCode());
-		}
-		if(dto.getInstitutionName() != null)
-		{
-			entity.setInstitutionName(dto.getInstitutionName());
-		}
-		if(dto.getInstitutionStatus() != null)
-		{
-			entity.setInstitutionStatus(dto.getInstitutionStatus());
-		}
-	}
-
-	/**
 	 * This method is responsible for retrieving institutions by ID, status or all
 	 *
 	 * @param id     the institution ID to filter by
@@ -127,5 +105,27 @@ public class InstitutionImpl implements InstitutionService
 
 		response.setDeveloperMessage(ResponseStatus.SUCCESS.getStatus()).setMessage("Institution deleted successfully");
 		return response;
+	}
+
+	/**
+	 * This method is used to update the non-null fields
+	 *
+	 * @param dto    the DTO containing institution information
+	 * @param entity the entity which will be updated
+	 **/
+	private void updateInstitutionFields(InstitutionDto dto, InstitutionEntity entity)
+	{
+		if(dto.getInstitutionCode() != null)
+		{
+			entity.setInstitutionCode(dto.getInstitutionCode());
+		}
+		if(dto.getInstitutionName() != null)
+		{
+			entity.setInstitutionName(dto.getInstitutionName());
+		}
+		if(dto.getInstitutionStatus() != null)
+		{
+			entity.setInstitutionStatus(dto.getInstitutionStatus());
+		}
 	}
 }

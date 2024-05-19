@@ -58,6 +58,8 @@ public class SecurityConfig
 						   // private endpoints
 						   .requestMatchers(HttpMethod.DELETE, "/institution/v1")
 						   .hasRole("ADMIN")
+						   .requestMatchers("/user/**")
+						   .hasRole("ADMIN")
 						   .requestMatchers("/**")
 						   .hasAnyRole("USER", "ADMIN")
 						   .anyRequest()

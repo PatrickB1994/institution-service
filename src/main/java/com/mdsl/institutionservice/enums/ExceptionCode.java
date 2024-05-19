@@ -14,6 +14,9 @@ public enum ExceptionCode
 	VALIDATION_EXCEPTION(4002, "Error validating"),
 	TOKEN_EXPIRED_EXCEPTION(4003, "Token expired"),
 	INVALID_REQUEST_EXCEPTION(4004, "Invalid request"),
+	INVALID_USER_NAME_EXCEPTION(4005, "Invalid username"),
+	INVALID_PASSWORD_EXCEPTION(4006, "Invalid password"),
+	INVALID_ROLE_EXCEPTION(4007, "Invalid role"),
 	;
 
 	private final int code;
