@@ -51,9 +51,9 @@ public class SecurityConfig
 						   .permitAll()
 						   .requestMatchers(HttpMethod.GET, "v3/api-docs/**")
 						   .permitAll()
-						   .requestMatchers(HttpMethod.POST, "/auth/v1/login")
+						   .requestMatchers(HttpMethod.POST, "/auth/login/v1")
 						   .permitAll()
-						   .requestMatchers(HttpMethod.POST, "/auth/v1/refreshToken")
+						   .requestMatchers(HttpMethod.POST, "/auth/refreshToken/v1")
 						   .permitAll()
 						   // private endpoints
 						   .requestMatchers(HttpMethod.DELETE, "/institution/v1")

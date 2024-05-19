@@ -9,6 +9,7 @@ import com.mdsl.institutionservice.exception.EntityNotFoundException;
 import com.mdsl.institutionservice.exception.InvalidRequestException;
 import com.mdsl.institutionservice.exception.InvalidUserNameException;
 import com.mdsl.institutionservice.repository.UserRepository;
+import com.mdsl.institutionservice.service.RefreshTokenService;
 import com.mdsl.institutionservice.service.RoleService;
 import com.mdsl.institutionservice.service.UserService;
 import com.mdsl.institutionservice.shared.Validation;
@@ -32,6 +33,7 @@ public class UserImpl implements UserService
 	private final Validation validation;
 	private final UserRepository userRepository;
 	private final RoleService roleService;
+	private final RefreshTokenService refreshTokenService;
 
 	/**
 	 * This method is populating the users for testing purposes
@@ -142,7 +144,9 @@ public class UserImpl implements UserService
 			throw new InvalidRequestException("User cannot delete himself");
 		}
 
-		userRepository.findById(id).orElseThrow(EntityNotFoundException::new);
+		UserEntity user = userRepository.findById(id).orElseThrow(EntityNotFoundException::new);
+
+		refreshTokenService.deleteUserRefreshToken(user);
 
 		userRepository.deleteById(id);
 
