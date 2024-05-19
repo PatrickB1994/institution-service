@@ -32,7 +32,7 @@ generates logs which can be monitored in the /logs directory.
 
 ## Author
 
-- [Patrick Badran, Senior Developer](https://github.com/PatrickB1994)
+- [Patrick Badran, Lead Developer](https://github.com/PatrickB1994)
 
 ## Copyright & Licensing Information
 
