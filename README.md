@@ -16,6 +16,7 @@ This project is developed using Java with Spring Boot framework. Key components 
 * API Documentation: Generates API documentation using Springdoc OpenAPI for improved documentation and ease of use.
 * Testing: Utilizes JUnit and Mockito for effective unit testing to ensure code reliability and quality.
 * Aspect-Oriented Programming (AOP): Implements AOP to log requests and responses for enhanced monitoring and debugging capabilities.
+* Docker: Dockerfile and docker-compose.yml provided for easier deployments.
 
 <img src="https://img.shields.io/badge/Language-Java-orange.svg">
 
