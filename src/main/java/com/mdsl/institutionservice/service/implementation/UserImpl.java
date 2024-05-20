@@ -172,7 +172,7 @@ public class UserImpl implements UserService
 		}
 		if(dto.getRoles() != null && !dto.getRoles().isEmpty())
 		{
-			entity.setRoles(dto.getRoles().stream().map(roleService::getByName).collect(Collectors.toList()));
+			entity.setRoles(dto.getRoles().stream().map(roleService::getById).collect(Collectors.toList()));
 		}
 	}
 

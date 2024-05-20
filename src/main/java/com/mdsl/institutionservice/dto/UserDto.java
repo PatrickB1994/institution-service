@@ -12,5 +12,5 @@ public class UserDto
 	private Long id;
 	private String userName;
 	private String password;
-	private List<String> roles;
+	private List<Long> roles;
 }
