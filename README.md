@@ -31,6 +31,12 @@ default credentials: username "admin" and password "admin". Upon successful auth
 Authorization header for subsequent requests. With a valid JWT token, you are now able to perform CRUD operations. Additionally, the application
 generates logs which can be monitored in the /logs directory.
 
+## Known Issues
+
+The refresh token logic currently expires tokens after 2 hours after which the user will need to login again. An alternative approach is to extend the
+TTL to a longer duration, such as 2 months. With each refresh token request, the old token can be deleted, a new token generated, and then sent to the
+user.
+
 ## Author
 
 - [Patrick Badran, Lead Developer](https://github.com/PatrickB1994)
