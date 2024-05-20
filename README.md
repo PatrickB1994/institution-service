@@ -33,9 +33,8 @@ generates logs which can be monitored in the /logs directory.
 
 ## Known Issues
 
-The refresh token logic currently expires tokens after 2 hours after which the user will need to login again. An alternative approach is to extend the
-TTL to a longer duration, such as 2 months. With each refresh token request, the old token can be deleted, a new token generated, and then sent to the
-user.
+The refresh token logic currently expires tokens after a period of time then the user will need to login again. An alternative approach is on each
+refresh token request delete the old token and generate a new one.
 
 ## Author
 
