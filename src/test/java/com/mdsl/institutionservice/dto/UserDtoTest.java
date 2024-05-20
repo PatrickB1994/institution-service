@@ -16,7 +16,7 @@ class UserDtoTest
 		Long id = 1L;
 		String userName = "testuser";
 		String password = "password";
-		List<String> roles = Arrays.asList("ROLE_USER", "ROLE_ADMIN");
+		List<Long> roles = Arrays.asList(1L, 2L);
 
 		UserDto userDto = new UserDto();
 		userDto.setId(id);

@@ -65,7 +65,7 @@ public class UserEntityTest
 		List<RoleEntity> roles = Collections.singletonList(RoleEntity.builder().name("USER").build());
 
 		// Act
-		UserEntity user = new UserEntity(id, name, password, roles, new RefreshTokenEntity());
+		UserEntity user = new UserEntity(id, name, password, roles);
 
 		// Assert
 		assertNotNull(user);

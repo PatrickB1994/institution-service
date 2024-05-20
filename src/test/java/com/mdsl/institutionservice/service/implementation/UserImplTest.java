@@ -8,6 +8,7 @@ import com.mdsl.institutionservice.enums.ResponseStatus;
 import com.mdsl.institutionservice.exception.EntityNotFoundException;
 import com.mdsl.institutionservice.exception.InvalidRequestException;
 import com.mdsl.institutionservice.repository.UserRepository;
+import com.mdsl.institutionservice.service.RefreshTokenService;
 import com.mdsl.institutionservice.service.RoleService;
 import com.mdsl.institutionservice.shared.Validation;
 import org.junit.jupiter.api.BeforeEach;
@@ -40,6 +41,9 @@ public class UserImplTest
 	@Mock
 	private RoleService roleService;
 
+	@Mock
+	private RefreshTokenService refreshTokenService;
+
 	@InjectMocks
 	private UserImpl userService;
 
@@ -59,7 +63,7 @@ public class UserImplTest
 		userDto.setId(1L);
 		userDto.setUserName("testuser");
 		userDto.setPassword("password");
-		userDto.setRoles(Collections.singletonList("USER"));
+		userDto.setRoles(Collections.singletonList(1L));
 	}
 
 	@Test
@@ -163,39 +167,4 @@ public class UserImplTest
 
 		assertThrows(InvalidRequestException.class, () -> userService.deleteUser(1L, currentUserName));
 	}
-	//
-	//	@Test
-	//	public void testGetUserByName_ExistingUser()
-	//	{
-	//		// Arrange
-	//		String userName = "admin";
-	//		String encodedPassword = new BCryptPasswordEncoder().encode("admin");
-	//		UserEntity userEntity = UserEntity.builder()
-	//										  .name(userName)
-	//										  .password(encodedPassword)
-	//										  .roles(Collections.singletonList(RoleEntity.builder().name("ADMIN").build()))
-	//										  .build();
-	//		when(userRepository.findByName(userName)).thenReturn(Optional.of(userEntity));
-	//
-	//		// Act
-	//		UserEntity retrievedUser = userService.getUserByName(userName);
-	//
-	//		// Assert
-	//		assertEquals(userName, retrievedUser.getName());
-	//		assertEquals(encodedPassword, retrievedUser.getPassword());
-	//		assertEquals("ADMIN", retrievedUser.getRoles().getFirst().getName());
-	//		verify(userRepository, times(1)).findByName(userName);
-	//	}
-	//
-	//	@Test
-	//	public void testGetUserByName_NonExistingUser()
-	//	{
-	//		// Arrange
-	//		String userName = "non_existing_user";
-	//		when(userRepository.findByName(userName)).thenReturn(Optional.empty());
-	//
-	//		// Act and Assert
-	//		assertThrows(EntityNotFoundException.class, () -> userService.getUserByName(userName));
-	//		verify(userRepository, times(1)).findByName(userName);
-	//	}
 }

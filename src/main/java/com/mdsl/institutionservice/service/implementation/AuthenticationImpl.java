@@ -106,7 +106,7 @@ public class AuthenticationImpl implements AuthenticationService
 		RefreshTokenEntity refreshToken = RefreshTokenEntity.builder()
 															.user(user)
 															.token(JwtHelper.generateRefreshToken())
-															.expiryDate(Instant.now().plusSeconds(600))
+															.expiryDate(Instant.now().plusSeconds(6000))
 															.build();
 		return refreshTokenRepository.save(refreshToken);
 	}

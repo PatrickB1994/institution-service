@@ -44,7 +44,7 @@ public class AspectControl
 		log.trace("Enter Method {}.{} Params: {}", className, joinPoint.getSignature().getName(), joinPoint.getArgs());
 	}
 
-	@AfterReturning(value = "applicationControllers()", returning = "result")
+	@AfterReturning(value = "applicationServices()", returning = "result")
 	private void logServiceReturn(JoinPoint joinPoint, Object result)
 	{
 		String className = joinPoint.getSignature().getDeclaringType().getSimpleName();
