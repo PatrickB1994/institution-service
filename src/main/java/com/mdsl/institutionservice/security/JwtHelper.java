@@ -38,9 +38,13 @@ public class JwtHelper
 				   .compact();
 	}
 
-	public static String generateRefreshToken()
+	public static String generateRefreshToken(String name)
 	{
-		return Jwts.builder().expiration(Date.from(Instant.now().plus(REFRESH_TOKEN_TTL, ChronoUnit.MINUTES))).signWith(getSignInKey()).compact();
+		return Jwts.builder()
+				   .subject(name)
+				   .expiration(Date.from(Instant.now().plus(REFRESH_TOKEN_TTL, ChronoUnit.MINUTES)))
+				   .signWith(getSignInKey())
+				   .compact();
 	}
 
 	public static String extractUsername(String token)

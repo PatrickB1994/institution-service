@@ -20,8 +20,6 @@ public class RefreshTokenEntity
 	private Long id;
 	@Column(name = "token", nullable = false)
 	private String token;
-	@Column(name = "expiry_date", nullable = false)
-	private Instant expiryDate;
 	@OneToOne
 	@JoinColumn(name = "user_id", referencedColumnName = "id")
 	private UserEntity user;

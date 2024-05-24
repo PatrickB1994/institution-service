@@ -31,11 +31,6 @@ default credentials: username "admin" and password "admin". Upon successful auth
 Authorization header for subsequent requests. With a valid JWT token, you are now able to perform CRUD operations. Additionally, the application
 generates logs which can be monitored in the /logs directory.
 
-## Known Issues
-
-The refresh token logic currently expires tokens after a period of time then the user will need to login again. An alternative approach is on each
-refresh token request delete the old token and generate a new one.
-
 ## Author
 
 - [Patrick Badran, Lead Developer](https://github.com/PatrickB1994)

@@ -11,15 +11,16 @@ import com.mdsl.institutionservice.exception.AccessDeniedException;
 import com.mdsl.institutionservice.exception.TokenExpiredException;
 import com.mdsl.institutionservice.repository.RefreshTokenRepository;
 import com.mdsl.institutionservice.security.JwtHelper;
+import com.mdsl.institutionservice.security.UserDetailsServiceImpl;
 import com.mdsl.institutionservice.service.AuthenticationService;
 import com.mdsl.institutionservice.service.CustomMetricService;
 import com.mdsl.institutionservice.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
-import java.time.Instant;
 import java.util.Optional;
 
 @Service
@@ -30,6 +31,7 @@ public class AuthenticationImpl implements AuthenticationService
 	private final AuthenticationManager authenticationManager;
 	private final RefreshTokenRepository refreshTokenRepository;
 	private final CustomMetricService customMetricService;
+	private final UserDetailsServiceImpl userDetailsService;
 	private final UserService userService;
 
 	/**
@@ -67,13 +69,29 @@ public class AuthenticationImpl implements AuthenticationService
 		RefreshTokenEntity refreshToken = refreshTokenRepository.findByToken(refreshTokenRequest.getRefreshToken())
 																.orElseThrow(() -> new AccessDeniedException("Refresh token not found"));
 
+		String userName = refreshToken.getUser().getName();
 		verifyRefreshTokenExpiration(refreshToken);
-		String token = JwtHelper.generateToken(refreshToken.getUser().getName());
+		String token = JwtHelper.generateToken(userName);
+		String newRefreshToken = createRefreshToken(userName).getToken();
 
 		customMetricService.refreshSuccess();
 
 		return response.setMessage(ResponseStatus.SUCCESS.getStatus())
-					   .setEntity(new LoginResponse().setToken(token).setRefreshToken(refreshTokenRequest.getRefreshToken()));
+					   .setEntity(new LoginResponse().setToken(token).setRefreshToken(newRefreshToken));
+	}
+
+	/**
+	 * This method is called when user logs out to delete the refresh token
+	 **/
+	public BaseResponse<?> logout(UserDetails userDetails)
+	{
+		BaseResponse<?> response = new BaseResponse<>();
+
+		UserEntity user = userService.getUserByName(userDetails.getUsername());
+
+		refreshTokenRepository.deleteByUser(user);
+
+		return response.setMessage(ResponseStatus.SUCCESS.getStatus());
 	}
 
 	/**
@@ -83,7 +101,10 @@ public class AuthenticationImpl implements AuthenticationService
 	 **/
 	private void verifyRefreshTokenExpiration(RefreshTokenEntity refreshToken)
 	{
-		if(refreshToken.getExpiryDate().compareTo(Instant.now()) < 0)
+		String token = refreshToken.getToken();
+		String username = JwtHelper.extractUsername(token);
+		UserDetails userDetails = userDetailsService.loadUserByUsername(username);
+		if(!JwtHelper.validateToken(token, userDetails))
 		{
 			refreshTokenRepository.delete(refreshToken);
 			throw new TokenExpiredException("Token was expired, please sign in again");
@@ -103,11 +124,7 @@ public class AuthenticationImpl implements AuthenticationService
 
 		oldRefreshToken.ifPresent(refreshTokenRepository::delete);
 
-		RefreshTokenEntity refreshToken = RefreshTokenEntity.builder()
-															.user(user)
-															.token(JwtHelper.generateRefreshToken())
-															.expiryDate(Instant.now().plusSeconds(6000))
-															.build();
+		RefreshTokenEntity refreshToken = RefreshTokenEntity.builder().user(user).token(JwtHelper.generateRefreshToken(userName)).build();
 		return refreshTokenRepository.save(refreshToken);
 	}
 }
