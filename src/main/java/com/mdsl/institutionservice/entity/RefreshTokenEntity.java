@@ -3,8 +3,6 @@ package com.mdsl.institutionservice.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.time.Instant;
-
 @Getter
 @Setter
 @Builder
